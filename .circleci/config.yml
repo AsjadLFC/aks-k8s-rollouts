@@ -3,12 +3,25 @@ version: 2.1
 orbs:
   docker: circleci/docker@2.6.0
   azure-aks: circleci/azure-aks@0.3.0
-  kubernetes: circleci/kubernetes@1.3.1
+  kubernetes: circleci/kubernetes@1.3.0
 
 jobs:
   argocd-manual-sync:
     docker:
       - image: cimg/base:stable
+    parameters:
+      server:
+        description: |
+          Server IP of of ArgoCD
+        type: string
+      username:
+        description: |
+          Username for ArgoCD
+        type: string
+      password:
+        description: |
+          Password for ArgoCD
+        type: string
     steps:
       - run:
           name: Install ArgoCD CLI
@@ -29,6 +42,15 @@ jobs:
 
   argocd-configure:
     executor: azure-aks/default
+    parameters:
+      cluster-name:
+        description: |
+          Name of the AKS cluster
+        type: string
+      resource-group:
+        description: |
+          Resource group that the cluster is in
+        type: string
     steps:
       - checkout
       - run:
@@ -67,7 +89,7 @@ jobs:
           name: Commit & Push to GitHub
           command: |
             git config user.email "$GITHUB_EMAIL"
-            git config user.name "$GITHUB_USER"
+            git config user.name "GITHUB_USER"
             git checkout $CIRCLE_BRANCH
             git add manifests/kustomization.yaml
             git commit -am "Bumps docker tag [skip ci]"
