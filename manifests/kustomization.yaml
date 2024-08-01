@@ -9,4 +9,4 @@ namespace: nodejs
 images:
 - name: aks-k8s-rollouts
   newName: asjadsohail/aks-k8s-rollouts
-  newTag: 5789aa48a0130672edb33914731a5c5d518a0377
+  newTag: 2fcee5657ca3e1dba967a7679f41a74846a64226
